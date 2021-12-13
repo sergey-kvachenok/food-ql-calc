@@ -1,12 +1,8 @@
-import Prisma from '@prisma/client'
-
-const {PrismaClient} = Prisma
-const prisma = new PrismaClient()
-
 const resolvers = {
   Query: {
-    getProducts: async (_, __, { dataSources }) => {
-      return await prisma.product.findMany()
+    products: async (_, {userId}, { dataSources }) => {
+      const response = await dataSources.productAPI.getProducts(userId)
+      return response
     },
   },
   Mutation: {

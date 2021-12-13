@@ -9,6 +9,7 @@ const resolvers = {
   Query: Object.assign({}, productResolvers.Query, userResolvers.Query),
   Mutation: Object.assign({}, productResolvers.Mutation, userResolvers.Mutation),
   User: Object.assign({}, userResolvers.User),
+  Meal: Object.assign({}, userResolvers.Meal)
 }
 
 const server = new ApolloServer({

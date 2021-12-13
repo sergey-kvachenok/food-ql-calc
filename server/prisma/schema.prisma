@@ -13,6 +13,8 @@ datasource db {
 model Product {
  id  Int @id @default(autoincrement())
   name String @unique
+  user User @relation(fields: [userId], references: [id])
+  userId Int
   proteins Float
   fats Float
   carbohydrates Float
@@ -22,6 +24,8 @@ model Product {
 model User {
   id Int @id @default(autoincrement())
   email String @unique
+  password String
+  products Product[]
   meals Meal[]
 }
 

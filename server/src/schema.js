@@ -2,50 +2,65 @@ import {gql} from 'apollo-server';
 
 const typeDefs = gql`
 type Query {
-  getProducts: [Product!]
+  products(userId: Int!): CreateProductsResponse
   getUser(email: String!): CreateUserResponse
   getMeals(userId: Int!): CreateMealsResponse
 }
 
 type Mutation {
-  createProduct(name: String!, proteins: Float!, fats: Float!, carbohydrates: Float!, calories: Float!): CreateProductResponse,
+  createProduct(userId: Int!, name: String!, proteins: Float!, fats: Float!, carbohydrates: Float!, calories: Float!): CreateProductResponse,
 
-  createUser(email: String!): CreateUserResponse,
-  createMeal(userId: Int!, productId: Int!, weight: Float!): CreateMealResponse
+  register(email: String!, password: String!): CreateUserResponse,
+  login(email: String!, password: String!): CreateUserResponse,
+  createMeal(
+    userId: Int!,
+     productId: Int,
+      weight: Float!,
+       name: String,
+        proteins: Float,
+         fats: Float,
+          carbohydrates: Float,
+           calories: Float): CreateMealResponse
+}
+
+type Meta {
+   code: Int!
+   success: Boolean!
+   message: String!
 }
 
 interface Response {
-    code: Int!
+   code: Int!
    success: Boolean!
    message: String!
 }
 
-type CreateUserResponse implements Response {
-   code: Int!
-   success: Boolean!
-   message: String!
-    data: User
+type CreateUserResponse {
+  meta: Meta!
+  user: User
+  token: String
 }
 
-type CreateMealResponse implements Response {
-   code: Int!
-   success: Boolean!
-   message: String!
-    data: Meal
+type CreateMealResponse {
+    meta: Meta!
+    meal: Meal
+}
+
+type CreateProductResponse{
+   meta: Meta!
+  product: Product
 }
 
 type CreateMealsResponse implements Response {
    code: Int!
    success: Boolean!
    message: String!
-    data: [Meal]
+    data: [Meal]!
 }
 
-type CreateProductResponse implements Response {
-   code: Int!
-   success: Boolean!
-   message: String!
-    data: Meal
+type CreateProductsResponse {
+   meta: Meta!
+   products: [Product]!
 }
 
 type Product {
@@ -60,14 +75,22 @@ type Product {
 type User {
   id: Int!
   email: String!
-  meals: [Meal]
+  meals: [Meal]!
+  products: [Product]
 }
 
 type Meal {
-  productId: Int!
+  product: Product!
   userId: Int!
   weight: Float!
   date: String!
+}
+
+type Total {
+  proteins: Float!
+  fats: Float!
+  carbohydrates: Float!
+  calories: Float!
 }
 `;
 
