@@ -1,92 +1,95 @@
-import { TextField, Grid, FormControl } from '@material-ui/core';
- 
-const NewProductFields = ({formik, classes}) => {
-  const { values, handleChange, touched, errors } = formik
+import { TextField, Grid, FormControl } from '@mui/material';
 
-return (
-<>
-          <Grid item xs={12}>
+const NewProductFields = ({ formik, classes }) => {
+  const { values, handleChange, touched, errors } = formik;
+
+  return (
+    <>
+      <Grid item xs={12}>
         <FormControl variant="filled" className={classes.formControl}>
-        <TextField
-           id="outlined-basic"
-           label="Product Name"
-           placeholder='Enter product name'
-           variant="outlined"
-           name='name'
-           value={values.name}
-           onChange={handleChange}
-           error={touched.name && Boolean(errors.name)}
-           helperText={touched.name && errors.name}
-             />
+          <TextField
+            id="outlined-basic"
+            label="Product Name"
+            placeholder="Enter product name"
+            variant="outlined"
+            name="name"
+            value={values.name}
+            onChange={handleChange}
+            error={touched.name && Boolean(errors.name)}
+            helperText={touched.name && errors.name}
+          />
         </FormControl>
-          </Grid>
+      </Grid>
 
-          <Grid item xs={6}>
+      <Grid item xs={6}>
         <FormControl variant="filled" className={classes.formControl}>
-        <TextField
-          id="outlined-basic"
-          label="Fats"
-           variant="outlined"
-           name='fats'
-             type="number"
-           placeholder='per 100gr'
-           value={values.fats}
-           onChange={handleChange}
-           error={touched.fats && Boolean(errors.fats)}
-           helperText={touched.fats && errors.fats}
-            />
+          <TextField
+            id="outlined-basic"
+            label="Fats"
+            variant="outlined"
+            name="fats"
+            type="number"
+            placeholder="per 100gr"
+            value={values.fats}
+            onChange={handleChange}
+            error={touched.fats && Boolean(errors.fats)}
+            helperText={touched.fats && errors.fats}
+          />
         </FormControl>
-          </Grid>
+      </Grid>
 
-          <Grid item xs={6}>
+      <Grid item xs={6}>
         <FormControl variant="filled" className={classes.formControl}>
-        <TextField
-           id="outlined-basic"
-           label="Proteins"
-           variant="outlined"
-           name='proteins'
-             type="number"
-           placeholder='per 100gr'
-           value={values.proteins}
-           onChange={handleChange}
-           error={touched.proteins && Boolean(errors.proteins)}
-           helperText={touched.proteins && errors.proteins} />
+          <TextField
+            id="outlined-basic"
+            label="Proteins"
+            variant="outlined"
+            name="proteins"
+            type="number"
+            placeholder="per 100gr"
+            value={values.proteins}
+            onChange={handleChange}
+            error={touched.proteins && Boolean(errors.proteins)}
+            helperText={touched.proteins && errors.proteins}
+          />
         </FormControl>
-          </Grid>
+      </Grid>
 
-          <Grid item xs={6}>
+      <Grid item xs={6}>
         <FormControl variant="filled" className={classes.formControl}>
-        <TextField
-           id="outlined-basic" 
-           label="Carbohydrates"
-           variant="outlined"
-           name='carbohydrates'
-             type="number"
-           placeholder='per 100gr'
-           value={values.carbohydrates}
-           onChange={handleChange}
-           error={touched.carbohydrates && Boolean(errors.carbohydrates)}
-           helperText={touched.carbohydrates && errors.carbohydrates} />
+          <TextField
+            id="outlined-basic"
+            label="Carbohydrates"
+            variant="outlined"
+            name="carbohydrates"
+            type="number"
+            placeholder="per 100gr"
+            value={values.carbohydrates}
+            onChange={handleChange}
+            error={touched.carbohydrates && Boolean(errors.carbohydrates)}
+            helperText={touched.carbohydrates && errors.carbohydrates}
+          />
         </FormControl>
-          </Grid>
+      </Grid>
 
-          <Grid item xs={6}>
+      <Grid item xs={6}>
         <FormControl variant="filled" className={classes.formControl}>
-        <TextField
-         id="outlined-basic"
-          label="Energy"
-           variant="outlined"
-           name='energy'
-             type="number"
-           placeholder='per 100gr'
-           value={values.energy}
-           onChange={handleChange}
-           error={touched.energy && Boolean(errors.energy)}
-           helperText={touched.energy && errors.energy}
-            />
+          <TextField
+            id="outlined-basic"
+            label="Energy"
+            variant="outlined"
+            name="energy"
+            type="number"
+            placeholder="per 100gr"
+            value={values.energy}
+            onChange={handleChange}
+            error={touched.energy && Boolean(errors.energy)}
+            helperText={touched.energy && errors.energy}
+          />
         </FormControl>
-          </Grid>
-          </>)
-}
+      </Grid>
+    </>
+  );
+};
 
-export default NewProductFields
+export default NewProductFields;

@@ -1,35 +1,40 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect } from 'react';
 
-const storageName = 'foodCalcData'
+const storageName = 'foodCalcData';
 
 export const useAuth = () => {
-  const [token, setToken] = useState(null)
-  const [email, setEmail] = useState(null)
-   const [userId, setUserId] = useState(null)
+  const [token, setToken] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [userId, setUserId] = useState(null);
 
   const login = useCallback((jwtToken, email, id) => {
-    setToken(jwtToken)
-    setEmail(email)
-    setUserId(id)
+    setToken(jwtToken);
+    setEmail(email);
+    setUserId(id);
 
-    localStorage.setItem(storageName, JSON.stringify({
-      email, token: jwtToken, userId: id,
-    }))
-  }, [])
+    localStorage.setItem(
+      storageName,
+      JSON.stringify({
+        email,
+        token: jwtToken,
+        userId: id,
+      }),
+    );
+  }, []);
 
   const logout = useCallback(() => {
-    setToken(null)
-    setEmail(null)
-    localStorage.removeItem(storageName)
-  }, [])
+    setToken(null);
+    setEmail(null);
+    localStorage.removeItem(storageName);
+  }, []);
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem(storageName))
+    const data = JSON.parse(localStorage.getItem(storageName));
 
     if (data && data.token) {
-      login(data.token, data.email, data.userId)
+      login(data.token, data.email, data.userId);
     }
-  }, [login])
+  }, [login]);
 
-  return { login, logout, token, email, userId}
-}
+  return { login, logout, token, email, userId };
+};

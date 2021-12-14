@@ -1,9 +1,12 @@
-import { BrowserRouter as Router } from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom';
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
-import { useRoutes } from './routes'
-import { useAuth } from './hooks/auth'
-import { AuthContext } from './context/AuthContext'
-import "materialize-css"
+import { ThemeProvider } from '@mui/styles';
+import { createTheme } from '@mui/material/styles';
+import { useRoutes } from './routes';
+import { useAuth } from './hooks/auth';
+import { AuthContext } from './context/AuthContext';
+
+const theme = createTheme();
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000',
@@ -11,21 +14,28 @@ const client = new ApolloClient({
 });
 
 function App() {
-  const { token, login, logout, userId, email } = useAuth()
-  const isAuthentificated = !!token
-  const routes = useRoutes(isAuthentificated)
+  const { token, login, logout, userId, email } = useAuth();
+  const isAuthentificated = !!token;
+  const routes = useRoutes(isAuthentificated);
 
   return (
     <ApolloProvider client={client}>
-    <AuthContext.Provider value={{
-      token, userId, login, logout, isAuthentificated, email
-    }}>
-      <Router>
-      <div className="container">
-      {routes}
-      </div>
-      </Router>
-    </AuthContext.Provider>
+      <ThemeProvider theme={theme}>
+        <AuthContext.Provider
+          value={{
+            token,
+            userId,
+            login,
+            logout,
+            isAuthentificated,
+            email,
+          }}
+        >
+          <Router>
+            <div className="container">{routes}</div>
+          </Router>
+        </AuthContext.Provider>
+      </ThemeProvider>
     </ApolloProvider>
   );
 }

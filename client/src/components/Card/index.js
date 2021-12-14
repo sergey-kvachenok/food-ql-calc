@@ -1,44 +1,54 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import CardHeader from '@material-ui/core/CardHeader';
+import React, { useContext } from 'react';
+import { useQuery, gql } from '@apollo/client';
+import { makeStyles } from '@mui/styles';
+import { Box } from '@mui/material';
+import { AuthContext } from '../../context/AuthContext';
+import ParameterCard from './ParameterCard';
+
+const TOTALS = gql`
+  query Totals($userId: Int!) {
+    totals(userId: $userId) {
+      totals {
+        calories
+        carbohydrates
+        fats
+        proteins
+      }
+    }
+  }
+`;
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 275,
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
   },
 });
 
-const DailyCard = ({title, value}) => {
+const DailyCard = () => {
   const classes = useStyles();
-  
-  return (
-    <Card className={classes.root}>
-    <CardHeader
-        title={title}
-      />
-      <CardContent>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-          {value}
-        </Typography>
-      </CardContent>
-    </Card>
-  );
-}
+  const { userId } = useContext(AuthContext);
+  const { loading, error, data } = useQuery(TOTALS, {
+    variables: {
+      userId,
+    },
+  });
 
-export default DailyCard
+  const { totals } = data?.totals || {};
+
+  if (!totals) return null;
+
+  const { calories, carbohydrates, fats, proteins } = totals || {};
+
+  return (
+    <Box className={classes.root}>
+      <ParameterCard title="Proteins" value={proteins} />
+      <ParameterCard title="Carbohydrates" value={carbohydrates} />
+      <ParameterCard title="Fats" value={fats} />
+      <ParameterCard title="Calories" value={calories} />
+    </Box>
+  );
+};
+
+export default DailyCard;
