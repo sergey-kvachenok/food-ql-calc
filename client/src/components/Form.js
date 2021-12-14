@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  Avatar,
-  Button,
-  CssBaseline,
-  TextField,
-  FormControlLabel,
-  Checkbox,
-  Typography,
-  Container,
-} from '@mui/material';
+import { Avatar, Button, CssBaseline, TextField, Typography, Container } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { makeStyles } from '@mui/styles';
 import ApiErrors from '../components/ApiErrors';
@@ -25,11 +16,8 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '100%',
     marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
   },
 }));
 
@@ -92,7 +80,7 @@ const Form = ({ getRedirectLink, formik, apiErrors, isSignin = false }) => {
               helperText={touched.repeatPassword && errors.repeatPassword}
             />
           )}
-          <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
+
           <Button
             type="submit"
             fullWidth
@@ -100,6 +88,7 @@ const Form = ({ getRedirectLink, formik, apiErrors, isSignin = false }) => {
             color="primary"
             className={classes.submit}
             disabled={isSubmitting}
+            sx={{ marginTop: '16px', marginBottom: '16px' }}
           >
             {isSignin ? 'Sign In' : 'Sign Up'}
           </Button>

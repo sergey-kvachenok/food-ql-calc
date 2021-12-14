@@ -18,7 +18,6 @@ const useStyles = makeStyles(theme => ({
 
 const NavigationPanel = () => {
   const auth = useContext(AuthContext);
-  console.log(auth);
   const { logout, email } = auth;
 
   const classes = useStyles();

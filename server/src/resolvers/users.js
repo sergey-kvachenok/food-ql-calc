@@ -1,4 +1,5 @@
 import { generateMetaResponse } from '../helpers/index.js';
+import round from 'lodash.round';
 import isEmpty from 'lodash.isempty';
 
 const resolvers = {
@@ -16,19 +17,19 @@ const resolvers = {
 
       let totals = meals.reduce((acc, meal) => {
         const { weight, product } = meal;
-        const calories = (product.calories / 100) * weight + acc.calories || 0;
-        const carbohydrates = (product.carbohydrates / 100) * weight + acc.carbohydrates || 0;
-        const fats = (product.fats / 100) * weight + acc.fats || 0;
-        const proteins = (product.proteins / 100) * weight + acc.proteins || 0;
+
+        const calories = (product.calories / 100) * weight + (acc.calories || 0);
+        const carbohydrates = (product.carbohydrates / 100) * weight + (acc.carbohydrates || 0);
+        const fats = (product.fats / 100) * weight + (acc.fats || 0);
+        const proteins = (product.proteins / 100) * weight + (acc.proteins || 0);
 
         return {
-          calories,
-          carbohydrates,
-          fats,
-          proteins,
+          calories: round(calories, 2),
+          carbohydrates: round(carbohydrates, 2),
+          fats: round(fats, 2),
+          proteins: round(proteins, 2),
         };
       }, {});
-
       if (isEmpty(totals)) {
         totals = null;
       }

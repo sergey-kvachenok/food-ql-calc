@@ -1,19 +1,19 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useFormik } from 'formik';
-import { useQuery, useMutation, gql } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import * as yup from 'yup';
 import { makeStyles } from '@mui/styles';
 import { Button, Grid, Box, Paper, Typography, IconButton } from '@mui/material';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { validationRules } from '../const/validation';
 import { sanitize } from '../helpers/form';
 import ApiErrors from '../components/ApiErrors';
 import SnackbarMessage from './Snackbar';
-
 import ExistingProductFields from './forms/ExistingProductFields';
 import NewProductBaseFields from './forms/NewProductFields';
 import { AuthContext } from '../context/AuthContext';
+import { validationRules } from '../const/validation';
+import { PRODUCTS, CREATE_MEAL, TOTALS } from '../const/queries';
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -55,57 +55,6 @@ const initialValues = {
   energy: '',
 };
 
-export const PRODUCTS = gql`
-  query Products($userId: Int!) {
-    products(userId: $userId) {
-      meta {
-        message
-        code
-      }
-      products {
-        name
-        id
-      }
-    }
-  }
-`;
-
-export const CREATE_MEAL = gql`
-  mutation CreateProduct(
-    $userId: Int!
-    $weight: Float!
-    $productId: Int
-    $name: String
-    $proteins: Float
-    $fats: Float
-    $carbohydrates: Float
-    $calories: Float
-  ) {
-    createMeal(
-      userId: $userId
-      weight: $weight
-      productId: $productId
-      name: $name
-      proteins: $proteins
-      fats: $fats
-      carbohydrates: $carbohydrates
-      calories: $calories
-    ) {
-      meta {
-        message
-      }
-      meal {
-        date
-        weight
-        userId
-        product {
-          name
-        }
-      }
-    }
-  }
-`;
-
 const getOpenFormButton = (addFormOpen, onClick) => (
   <>
     <IconButton aria-label="open-add-form" onClick={onClick}>
@@ -126,10 +75,22 @@ const AddProduct = () => {
       userId,
     },
   });
-  const [createMeal] = useMutation(CREATE_MEAL);
+
+  const [createMeal] = useMutation(CREATE_MEAL, {
+    refetchQueries: [
+      {
+        query: PRODUCTS,
+        variables: { userId },
+      },
+      {
+        query: TOTALS,
+        variables: { userId },
+      },
+    ],
+  });
 
   const [addFormOpen, setAddFormOpen] = useState(false);
-  const [submitError, setSubmitError] = useState(null);
+  const [apiError, setApiError] = useState(null);
   const [snackbarMessage, setSnackbarMessage] = useState(null);
   const formik = useFormik({
     initialValues,
@@ -137,20 +98,22 @@ const AddProduct = () => {
     onSubmit: values => submitForm(values),
   });
 
-  if (loading) return <div>Loading...</div>;
-  let apiErrors = error;
-  const { products, meta } = data.products;
+  const { products, meta } = data?.products || {};
 
-  if (meta.code === 400) {
-    apiErrors = meta;
-  }
+  useEffect(() => {
+    if (meta?.code === 400) {
+      setApiError(meta);
+    }
+  }, [meta]);
+
+  if (loading) return <div>Loading...</div>;
 
   const selectMenuItems = getMenuItems(products);
 
   const submitForm = async values => {
     const sanitizedValues = sanitize(values);
     const { product, weight, carbohydrates, fats, proteins, energy, name } = sanitizedValues;
-    setSubmitError(null);
+    setApiError(null);
 
     try {
       if (addFormOpen) {
@@ -162,7 +125,7 @@ const AddProduct = () => {
       resetForm();
       setSnackbarMessage('Your data was saved');
     } catch (apiError) {
-      setSubmitError(apiError.errors);
+      setApiError(apiError.errors);
     }
   };
 
@@ -202,7 +165,7 @@ const AddProduct = () => {
             Add
           </Button>
         </form>
-        {apiErrors && <ApiErrors errors={apiErrors} />}
+        {apiError && <ApiErrors errors={apiError} />}
       </Paper>
       {snackbarMessage && (
         <SnackbarMessage

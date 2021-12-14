@@ -10,16 +10,3 @@ export const sanitize = values => {
 
   return valuesCopy;
 };
-
-// export const handleProductSubmitValues = (values, isAddFormOpen) => {
-//   const valuesCopy = sanitize(values)
-
-//   if (isAddFormOpen) {
-//     delete valuesCopy.product
-//     delete valuesCopy.weight
-//     return valuesCopy
-//   }
-
-//   const { product, weight } = valuesCopy
-//   return { product, weight }
-// }
