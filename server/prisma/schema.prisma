@@ -11,49 +11,31 @@ datasource db {
 }
 
 model Product {
- id  Int @id @default(autoincrement())
-  name String @unique
-  user User @relation(fields: [userId], references: [id])
-  userId Int
-  proteins Float
-  fats Float
+  id            Int    @id @default(autoincrement())
+  name          String @unique
+  user          User   @relation(fields: [userId], references: [id])
+  userId        Int
+  proteins      Float
+  fats          Float
   carbohydrates Float
-  calories Float
+  calories      Float
+  Meal          Meal[]
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  email String @unique
+  id       Int       @id @default(autoincrement())
+  email    String    @unique
   password String
   products Product[]
-  meals Meal[]
+  meals    Meal[]
 }
-
-// model Day {
-//    id Int @id @default(autoincrement())
-//    user User @relation(fields: [userId], references: [id])
-//    totalId Int
-//    userId Int
-//    date String
-//    meals Meal[]
-//    total Total
-// }
 
 model Meal {
-  id Int @id @default(autoincrement())
-  user User @relation(fields: [userId], references: [id])
-  date String
-  userId Int
+  id        Int     @id @default(autoincrement())
+  user      User    @relation(fields: [userId], references: [id])
+  date      String
+  userId    Int
+  product   Product @relation(fields: [productId], references: [id])
+  weight    Float
   productId Int
-  weight Float
 }
-
-// model Total {
-//   id Int @id @default(autoincrement())
-//   day Day? @relation(fields: [dayId], references: [id])
-//   dayId Int
-//   proteins Float
-//   fats Float
-//   carbohydrates Float
-//   calories Float
-// }

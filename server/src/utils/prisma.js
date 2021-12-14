@@ -1,6 +1,6 @@
-import Prisma from '@prisma/client'
+import Prisma from '@prisma/client';
 
-const {PrismaClient} = Prisma
+const { PrismaClient } = Prisma;
 
 class DBClient {
   constructor() {
@@ -10,7 +10,7 @@ class DBClient {
     return DBClient.instance;
   }
 
-    static getInstance() {
+  static getInstance() {
     return DBClient.instance;
   }
 }

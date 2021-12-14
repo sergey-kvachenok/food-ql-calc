@@ -1,7 +1,7 @@
-import {ApolloServer} from 'apollo-server';
+import { ApolloServer } from 'apollo-server';
 import typeDefs from './src/schema.js';
-import productResolvers from './src/resolvers/products.js'
-import userResolvers from './src/resolvers/users.js'
+import productResolvers from './src/resolvers/products.js';
+import userResolvers from './src/resolvers/users.js';
 import ProductAPI from './src/datasources/products.js';
 import UserAPI from './src/datasources/users.js';
 
@@ -9,19 +9,19 @@ const resolvers = {
   Query: Object.assign({}, productResolvers.Query, userResolvers.Query),
   Mutation: Object.assign({}, productResolvers.Mutation, userResolvers.Mutation),
   User: Object.assign({}, userResolvers.User),
-  Meal: Object.assign({}, userResolvers.Meal)
-}
+  Meal: Object.assign({}, userResolvers.Meal),
+};
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
- dataSources: () => {
-   return {
-        productAPI: new ProductAPI(),
-        userAPI: new UserAPI(),
-   }
- }
-    });
+  dataSources: () => {
+    return {
+      productAPI: new ProductAPI(),
+      userAPI: new UserAPI(),
+    };
+  },
+});
 
 server.listen().then(() => {
   console.log(`

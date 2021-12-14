@@ -1,4 +1,4 @@
 export const codes = {
-  uniqueConstraints: "P2002",
-  foreignKeyConstraint: "P2003"
-}
+  uniqueConstraints: 'P2002',
+  foreignKeyConstraint: 'P2003',
+};
